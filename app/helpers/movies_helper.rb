@@ -1,10 +1,10 @@
 module MoviesHelper
   
   def check_selected(rating)
-    if params[:ratings] ==  nil
+    if session[:ratings] ==  nil
       return  true
     end
-    if rating == nil or params[:ratings].include? rating
+    if rating == nil or session[:ratings].include? rating
       return true
     else
       return false

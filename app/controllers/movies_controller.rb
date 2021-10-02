@@ -12,19 +12,34 @@ class MoviesController < ApplicationController
 
       #debugger
       
-      if params[:ratings] 
+      if params[:ratings] and params[:sort]
+        session[:ratings] = params[:ratings]
+        session[:sort]    = params[:sort]   
         
-        @movies = Movie.where("rating IN (?)", params[:ratings].keys).order(params[:sort])
+      elsif params[:ratings]
+        session[:ratings] = params[:ratings] 
+
+      elsif params[:sort]
+        session[:sort]    = params[:sort] 
+        
+      end
+        
+      
+      @chosen_ratings = session[:ratings]
+      
+      if session[:ratings] 
+        
+        @movies = Movie.where("rating IN (?)", session[:ratings].keys).order(session[:sort])
         
       else
-        @movies = Movie.order(params[:sort])
+        @movies = Movie.order(session[:sort])
       
       end
       
-      if params[:sort] == 'title'
+      if session[:sort] == 'title'
         @title = 'hilite'
         
-      elsif params[:sort] == 'release_date'
+      elsif session[:sort] == 'release_date'
         @release_date = 'hilite'
       
       end
